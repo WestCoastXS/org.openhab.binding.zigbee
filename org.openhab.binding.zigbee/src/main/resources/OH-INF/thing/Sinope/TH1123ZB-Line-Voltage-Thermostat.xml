@@ -36,7 +36,7 @@ Send time in unix format, time since epoch, adjusting for local time zone. -->
 				<property name="zigbee_datatype">UNSIGNED_32_BIT_INTEGER</property>
 			</properties>
 		</channel>
-<!-- 		
+	
 		<channel id="backlight" typeId="binaryinput">
 			<label>Backlight Control</label>
 			<description>Enable or disable backlight.</description>
@@ -47,7 +47,7 @@ Send time in unix format, time since epoch, adjusting for local time zone. -->
 				<property name="zigbee_datatype">ENUMERATION_8_BIT</property>
 			</properties>
 		</channel>
--->
+
             <channel id="thermostatrunningmode" typeId="thermostat_runningmode">
                 <properties>
                     <property name="zigbee_endpoint">1</property>
