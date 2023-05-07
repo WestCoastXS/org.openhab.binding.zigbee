@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zigbee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+    <thing-type id="Sinope_TH1123ZB" listed="false">
+        <label>Sinope TH1123ZB Line Voltage Thermostat</label>
+        <description>Sinope Technologies Line Voltage Thermostat</description>
+
+        <channels>
+
+<!-- Custom channel to SEND outdoor temperature data TO the device. 
+The device accepts this as degrees centigrade * 100 
+Enable Outdoor Temperature Display Timeout -->
+		<channel id="send_outdoor_temperature" typeId="thermostat_outdoortemp">
+			<label>Outside Temperature</label>
+			<description>Send outside temperature to thermostats for display.</description>
+			<properties>
+				<property name="zigbee_endpoint">1</property>
+				<property name="zigbee_inputclusters">0xFF01</property>
+				<property name="zigbee_attribute">0x0010</property>		
+				<property name="zigbee_datatype">SIGNED_16_BIT_INTEGER</property>
+			</properties>
+		</channel>
+
+<!-- Custom channel to SEND current time TO the device. 
+Send time in unix format, time since epoch, adjusting for local time zone. -->
+		<channel id="send_current_time" typeId="sinopeth1123zb_currenttime">
+			<label>Current Time</label>
+			<description>Send current time to thermostat for display (Unix Epoch Format).</description>
+			<properties>
+				<property name="zigbee_endpoint">1</property>
+				<property name="zigbee_inputclusters">0xFF01</property>
+				<property name="zigbee_attribute">0x0020</property>
+				<property name="zigbee_datatype">UNSIGNED_32_BIT_INTEGER</property>
+			</properties>
+		</channel>
+<!-- 		
+		<channel id="backlight" typeId="binaryinput">
+			<label>Backlight Control</label>
+			<description>Enable or disable backlight.</description>
+			<properties>
+				<property name="zigbee_endpoint">1</property>
+				<property name="zigbee_inputclusters">0x0201</property>
+				<property name="zigbee_attribute">0x1026</property>
+				<property name="zigbee_datatype">ENUMERATION_8_BIT</property>
+			</properties>
+		</channel>
+-->
+            <channel id="thermostatrunningmode" typeId="thermostat_runningmode">
+                <properties>
+                    <property name="zigbee_endpoint">1</property>
+                </properties>
+            </channel>
+
+            <channel id="Voltage" typeId="electrical_rmsvoltage">
+                <properties>
+                    <property name="zigbee_endpoint">1</property>
+                </properties>
+            </channel>
+
+            <channel id="Temperature" typeId="measurement_temperature">
+                <properties>
+                    <property name="zigbee_endpoint">1</property>
+                </properties>
+            </channel>
+
+            <channel id="meteringsumdelivered" typeId="metering_sumdelivered">
+                <properties>
+                    <property name="zigbee_endpoint">1</property>
+                </properties>
+            </channel>
+
+            <channel id="thermostatlocaltemp" typeId="thermostat_localtemp">
+                <properties>
+                    <property name="zigbee_endpoint">1</property>
+                </properties>
+            </channel>
+
+            <channel id="activepower" typeId="electrical_activepower">
+                <properties>
+                    <property name="zigbee_endpoint">1</property>
+                </properties>
+            </channel>
+
+            <channel id="thermostatoccupiedheating" typeId="thermostat_occupiedheating">
+                <properties>
+                    <property name="zigbee_endpoint">1</property>
+                </properties>
+            </channel>
+
+            <channel id="thermostatsystemmode" typeId="thermostat_systemmode">
+                <properties>
+                    <property name="zigbee_endpoint">1</property>
+                </properties>
+            </channel>
+
+            <channel id="Current" typeId="electrical_rmscurrent">
+                <properties>
+                    <property name="zigbee_endpoint">1</property>
+                </properties>
+            </channel>
+        </channels>
+
+        <config-description>
+            <parameter name="zigbee_macaddress" type="text" readOnly="true" required="true">
+                <label>MAC Address</label>
+            </parameter>
+
+           <parameter name="attribute_01_0201_1026_30" type="integer" required="false">
+                <label>Backlight</label>
+		<default>1</default>
+                <options>
+                    <option value="0">On Demand Only</option>
+                    <option value="1">Enabled</option>
+                </options>
+            </parameter>
+
+            <parameter name="attribute_01_0204_0000_18" type="integer" required="false">
+                <label>Temperature Display Mode</label>
+		<default>0</default>
+                <options>
+                    <option value="0">Celsius</option>
+                    <option value="1">Fahrenheit</option>
+                </options>
+            </parameter>
+
+            <parameter name="attribute_01_0204_1_18" type="integer" required="false">
+                <label>Keylock</label>
+		<default>0</default>
+                <options>
+                    <option value="0">UnLock Keys</option>
+                    <option value="1">Lock Keys</option>
+                </options>
+            </parameter>
+
+            <parameter name="attribute_01_FF01_0017_21" type="integer" required="false">
+                <label>Outdoor Temperature Display Timeout</label>
+		<default>0</default>
+                <options>
+                    <option value="14400">Four Hour Timeout</option>
+                    <option value="0">Disable Outdoor Temperature Display</option>
+                </options>
+            </parameter>
+
+            <parameter name="attribute_01_FF01_0276_30" type="integer" required="false">
+                <label>12hr/24hr Clock Setting</label>
+		<default>1</default>
+                <options>
+                    <option value="1">12-hour Clock Display</option>
+                    <option value="0">24-hour Clock Display</option>
+                </options>
+            </parameter>
+
+            <parameter name="attribute_01_0201_0401_33" type="integer" required="false">
+                <label>Heater Type</label>
+		<default>15</default>
+                <options>
+                    <option value="15">Baseboard/Convectors</option>
+                    <option value="900">Fan Forced Air</option>
+                </options>
+            </parameter>
+
+            <parameter name="attribute_01_0201_0003_29" type="text" required="false">
+                <label>Minimum Setpoint</label>
+                <default>5</default>
+                <advanced>true</advanced>
+            </parameter>
+
+            <parameter name="attribute_01_0201_0004_29" type="text" required="false">
+                <label>Maximum Setpoint</label>
+                <default>30</default>
+                <advanced>true</advanced>
+            </parameter>
+
+        </config-description>
+
+	<channel-type id="sinopeth1123zb_currenttime">
+		<item-type>Number</item-type>
+		<label>Time</label>
+		<description>Send Current Epoch Time</description>
+	</channel-type>
+    
+    </thing-type>
+</thing:thing-descriptions>
